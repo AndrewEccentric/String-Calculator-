@@ -6,6 +6,7 @@ import (
 	"os"
 	"strconv"
 	"strings"
+	"bufio"
 )
 
 // +
@@ -101,17 +102,16 @@ func evaluateExpression(expression string) (string, error) {
 }
 
 func main() {
-	if len(os.Args) != 2 {
-		fmt.Println("Некорректные аргументы")
-		return
-	}
+	reader := bufio.NewReader(os.Stdin)
+	fmt.Print("Введите выражение: ")
+	expression, _ := reader.ReadString('\n')
+	expression = strings.TrimSpace(expression)
 
-	expression := os.Args[1]
 	result, err := evaluateExpression(expression)
 	if err != nil {
-		fmt.Println("Ошибка:", err)
+		fmt.Println("Ошибка", err)
 		return
 	}
 
-	fmt.Println(result)
+	fmt.Println("Результат:", result)
 }
