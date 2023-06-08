@@ -11,11 +11,17 @@ import (
 
 // +
 func concatenateStrings(a, b string) (string, error) {
+	if len(a) > 10 || len(b) > 10 {
+		return "", errors.New("Строка слишком длинная")
+	}
 	return a + b, nil
 }
 
 // -
 func subtractStrings(a, b string) (string, error) {
+	if len(a) > 10 || len(b) > 10 {
+		return "", errors.New("Строка слишком длинная")
+	}
 	if strings.Contains(a, b) {
 		return strings.Replace(a, b, "", 1), nil
 	} else {
@@ -25,30 +31,34 @@ func subtractStrings(a, b string) (string, error) {
 
 // строка на число
 func multiplyString(a string, b int) (string, error) {
+	if len(a) > 10 {
+		return "", errors.New("Строка слишком длинная")
+	}
+	if len(b) > 10 {
+		return "", errors.New("Число слишком длинное")
+	}
 	if b <= 0 {
 		return "", errors.New("Число должно быть положительным")
 	}
-
-	result := ""
-	for i := 0; i < b; i++ {
-		result += a
-		if len(result) > 10 {
-			return "", errors.New("Результат слишком длинный")
+    result := strings.Repeat(a, b)
+		} else {
+	        return result, nil
 		}
-	}
-	return result, nil
-}
 
 // : строки на число
 func divideString(a string, b int) (string, error) {
+	if len(a) > 10 {
+		return "", errors.New("Строка слишком длинная")
+	}
+	if len(b) > 10 {
+		return "", errors.New("Число слишком длинное")
+	}
 	if b <= 0 {
 		return "", errors.New("Число должно быть положительным")
 	}
-
-	if len(a)/b > 10 {
-		return "", errors.New("Результат слишком длинный")
-	}
-	return a[:len(a)/b], nil
+    result := a[:len(a)/b]
+	} else {
+	return result, nil
 }
 
 // для обработки введенного выражения и выполнения операции
@@ -99,6 +109,13 @@ func evaluateExpression(expression string) (string, error) {
 		}
 	}
 	return "", errors.New("Некорректные операнды")
+}
+
+func truncateString(s string) string {
+	if len(s) > 40 {
+		return s[:40] + "..."
+	}
+	return s 
 }
 
 func main() {
