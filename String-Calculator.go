@@ -1,18 +1,18 @@
 package main
 
 import (
+	"bufio"
 	"errors"
 	"fmt"
 	"os"
 	"strconv"
 	"strings"
-	"bufio"
 )
 
 // +
 func concatenateStrings(a, b string) (string, error) {
 	if len(a) > 10 || len(b) > 10 {
-		return "", errors.New("Строка слишком длинная")
+		return "", errors.New("строка слишком длинная")
 	}
 	return a + b, nil
 }
@@ -20,7 +20,7 @@ func concatenateStrings(a, b string) (string, error) {
 // -
 func subtractStrings(a, b string) (string, error) {
 	if len(a) > 10 || len(b) > 10 {
-		return "", errors.New("Строка слишком длинная")
+		return "", errors.New("строка слишком длинная")
 	}
 	if strings.Contains(a, b) {
 		return strings.Replace(a, b, "", 1), nil
@@ -32,32 +32,30 @@ func subtractStrings(a, b string) (string, error) {
 // строка на число
 func multiplyString(a string, b int) (string, error) {
 	if len(a) > 10 {
-		return "", errors.New("Строка слишком длинная")
+		return "", errors.New("строка слишком длинная")
 	}
-	if len(b) > 10 {
-		return "", errors.New("Число слишком длинное")
+	if b > 10 {
+		return "", errors.New("число слишком длинное")
 	}
 	if b <= 0 {
-		return "", errors.New("Число должно быть положительным")
+		return "", errors.New("число должно быть положительным")
 	}
-    result := strings.Repeat(a, b)
-		} else {
-	        return result, nil
-		}
+	result := strings.Repeat(a, b)
+	return result, nil
+}
 
 // : строки на число
 func divideString(a string, b int) (string, error) {
 	if len(a) > 10 {
-		return "", errors.New("Строка слишком длинная")
+		return "", errors.New("строка слишком длинная")
 	}
-	if len(b) > 10 {
-		return "", errors.New("Число слишком длинное")
+	if b > 10 {
+		return "", errors.New("число слишком длинное")
 	}
 	if b <= 0 {
-		return "", errors.New("Число должно быть положительным")
+		return "", errors.New("число должно быть положительным")
 	}
-    result := a[:len(a)/b]
-	} else {
+	result := a[:len(a)/b]
 	return result, nil
 }
 
@@ -66,7 +64,7 @@ func evaluateExpression(expression string) (string, error) {
 	parts := strings.Split(expression, " ")
 
 	if len(parts) != 3 {
-		return "", errors.New("Некорректное выражение")
+		return "", errors.New("некорректное выражение")
 	}
 
 	operand1 := parts[0]
@@ -74,7 +72,7 @@ func evaluateExpression(expression string) (string, error) {
 	operand2 := parts[2]
 
 	if operator != "+" && operator != "-" && operator != "*" && operator != "/" {
-		return "", errors.New("Некорректный оператор")
+		return "", errors.New("некорректный оператор")
 	}
 
 	if strings.HasPrefix(operand1, "\"") && strings.HasSuffix(operand1, "\"") &&
@@ -88,34 +86,36 @@ func evaluateExpression(expression string) (string, error) {
 		case "-":
 			return subtractStrings(operand1, operand2)
 		default:
-			return "", errors.New("Неподдерживаемая операция над строками")
+			return "", errors.New("неподдерживаемая операция над строками")
 		}
-	} else if num1, err := strconv.Atoi(operand1); err == nil {
+
+	} else {
+
 		switch operator {
 		case "*":
-			num2, err := strconv.Atoi(operand2)
+			num, err := strconv.Atoi(operand2)
 			if err != nil {
-				return "", errors.New("Некорректное число")
+				return "", errors.New("некорректное число")
 			}
-			return multiplyString(operand1, num2)
+			return multiplyString(operand1, num)
+
 		case "/":
-			num2, err := strconv.Atoi(operand2)
+			num, err := strconv.Atoi(operand2)
 			if err != nil {
-				return "", errors.New("Некорректное число")
+				return "", errors.New("некорректное число")
 			}
-			return divideString(operand1, num2)
+			return divideString(operand1, num)
 		default:
-			return "", errors.New("Неподдерживаемая операция с числами")
+			return "", errors.New("неподдерживаемая операция с числами")
 		}
 	}
-	return "", errors.New("Некорректные операнды")
 }
 
 func truncateString(s string) string {
 	if len(s) > 40 {
 		return s[:40] + "..."
 	}
-	return s 
+	return s
 }
 
 func main() {
@@ -130,5 +130,5 @@ func main() {
 		return
 	}
 
-	fmt.Println("Результат:", result)
+	fmt.Println("Результат:", truncateString(result))
 }
