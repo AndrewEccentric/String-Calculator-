@@ -104,6 +104,9 @@ func evaluateExpression(expression string) (string, error) {
 			if err != nil {
 				return "", errors.New("некорректное число")
 			}
+			if num == 0 {
+				return "", errors.New("деление на ноль недопустимо")
+			}
 			return divideString(operand1, num)
 		default:
 			return "", errors.New("неподдерживаемая операция с числами")
