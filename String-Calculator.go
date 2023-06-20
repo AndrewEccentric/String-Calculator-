@@ -9,6 +9,18 @@ import (
 	"strings"
 )
 
+func validateInput(a string, b int) error {
+	if len(a) > 10 {
+		return errors.New("строка слишком длинная")
+	}
+	if b > 10 {
+		return errors.New("число слишком длинное")
+	}
+	if b <= 0 {
+		return errors.New("число должно быть положительным")
+	}
+	return nil
+}
 func concatenateStrings(a, b string) (string, error) {
 	if len(a) > 10 || len(b) > 10 {
 		return "", errors.New("строка слишком длинная")
@@ -28,28 +40,15 @@ func subtractStrings(a, b string) (string, error) {
 }
 
 func multiplyString(a string, b int) (string, error) {
-	if len(a) > 10 {
-		return "", errors.New("строка слишком длинная")
-	}
-	if b > 10 {
-		return "", errors.New("число слишком длинное")
-	}
-	if b <= 0 {
-		return "", errors.New("число должно быть положительным")
+	if err := validateInput(a, b); err != nil {
+		return "", err
 	}
 	result := strings.Repeat(a, b)
 	return result, nil
 }
-
 func divideString(a string, b int) (string, error) {
-	if len(a) > 10 {
-		return "", errors.New("строка слишком длинная")
-	}
-	if b > 10 {
-		return "", errors.New("число слишком длинное")
-	}
-	if b <= 0 {
-		return "", errors.New("число должно быть положительным")
+	if err := validateInput(a, b); err != nil {
+		return "", err
 	}
 	result := a[:len(a)/b]
 	return result, nil
