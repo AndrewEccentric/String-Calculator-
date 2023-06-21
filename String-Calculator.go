@@ -50,6 +50,9 @@ func divideString(a string, b int) (string, error) {
 	if err := validateInput(a, b); err != nil {
 		return "", err
 	}
+	if len(a)%b != 0 {
+		return "", errors.New("некорректное деление строки на число")
+	}
 	result := a[:len(a)/b]
 	return result, nil
 }
